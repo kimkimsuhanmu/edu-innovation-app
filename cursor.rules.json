@@ -1,0 +1,45 @@
+{
+  "projectContext": "이 프로젝트는 '사내 교육 혁신 플랫폼'을 개발하는 것입니다. 주 사용자는 현장직이 많은 '김대리'이며, 운전 중에도 학습할 수 있도록 영상 콘텐츠의 '음성 모드' 전환 및 백그라운드 재생이 핵심입니다. 또한, 한번 본 콘텐츠는 기기에 자동 캐싱되어 데이터 소모 없이 오프라인 재생이 가능해야 합니다. 관리자는 웹에서 콘텐츠를 올리고, 직원들의 수료 현황을 CSV로 다운로드할 수 있습니다.",
+  "techStack": {
+    "frontend_mobile": "React Native",
+    "frontend_web": "React",
+    "language": "TypeScript",
+    "backend_as_a_service": "Google Firebase",
+    "firebase_services": [
+      "Authentication for user login",
+      "Firestore for database (user progress, comments, etc.)",
+      "Cloud Storage for video/audio file storage",
+      "Cloud Functions for server-side logic (e.g., video-to-audio conversion trigger)"
+    ]
+  },
+  "codingConventions": {
+    "style_guide": "ESLint with Prettier for consistent code style. Follow Airbnb style guide.",
+    "component_style": "Use Functional Components with React Hooks. Avoid Class Components.",
+    "state_management": "Start with React Context API. If complexity grows, consider Zustand.",
+    "type_safety": "TypeScript is mandatory. Avoid using the 'any' type wherever possible. Define clear interfaces for all data structures.",
+    "naming_convention": "Components in PascalCase (e.g., VideoPlayer.tsx), functions in camelCase (e.g., playVideo).",
+    "api_calls": "Centralize all Firebase interactions in a dedicated service file, e.g., 'src/services/firebase.ts'."
+  },
+  "folderStructure": [
+    "src",
+    "├── screens/         # 각 화면 (e.g., HomeScreen.tsx, PlayerScreen.tsx)",
+    "├── components/      # 재사용 가능한 공통 컴포넌트 (e.g., Button.tsx, Header.tsx)",
+    "├── services/        # 외부 서비스 연동 로직 (e.g., firebase.ts)",
+    "├── navigation/      # 화면 이동 관련 설정",
+    "├── state/           # 전역 상태 관리",
+    "├── hooks/           # 커스텀 훅",
+    "├── utils/           # 유틸리티 함수",
+    "└── assets/          # 이미지, 폰트 등"
+  ],
+  "coreFilesToRef": [
+    "App.tsx",
+    "src/navigation/AppNavigator.tsx",
+    "src/services/firebase.ts"
+  ],
+  "antiPatterns": [
+    "Do not hardcode API keys or sensitive credentials directly in the source code. Use environment variables.",
+    "Avoid creating monolithic components. Break down large components into smaller, reusable ones.",
+    "Do not mix business logic directly into UI components. Separate logic into custom hooks or service files.",
+    "Do not ignore error handling for API calls and asynchronous operations. Implement proper try-catch blocks and user feedback for errors."
+  ]
+}

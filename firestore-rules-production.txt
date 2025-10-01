@@ -1,0 +1,98 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 헬퍼 함수
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+        exists(/databases/$(database)/documents/user/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/user/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    function isActiveUser() {
+      return isAuthenticated() && 
+        exists(/databases/$(database)/documents/user/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/user/$(request.auth.uid)).data.status == 'active';
+    }
+    
+    // 기본적으로, 로그인한 사용자는 모든 데이터를 읽을 수 있게 허용
+    match /{document=**} {
+      allow read: if isAuthenticated();
+    }
+
+    // 'user' 컬렉션: 사용자 계정 관리
+    match /user/{userId} {
+      // 인증된 사용자는 자신의 정보 읽기/수정 가능
+      allow read: if isAuthenticated() && request.auth.uid == userId;
+      allow update: if isAuthenticated() && request.auth.uid == userId;
+      
+      // 회원가입을 위해 인증된 사용자가 자신의 문서를 생성할 수 있도록 허용
+      // role과 status 필드가 올바르게 설정되어야 함
+      allow create: if isAuthenticated() && 
+                     request.auth.uid == userId && 
+                     request.resource.data.role == 'user' &&
+                     request.resource.data.status == 'pending' &&
+                     request.resource.data.email != null &&
+                     request.resource.data.displayName != null &&
+                     request.resource.data.employeeId != null &&
+                     request.resource.data.createdAt != null;
+      
+      // 관리자는 모든 사용자 정보에 접근 가능
+      allow read, write: if isAdmin();
+      
+      // 회원가입 시 사원번호 중복 확인을 위한 읽기 권한 허용
+      // 모든 인증된 사용자가 user 컬렉션을 쿼리할 수 있도록 허용
+      allow list: if isAuthenticated();
+    }
+
+    // 'learningRecords' 컬렉션: 학습 기록 관리
+    match /learningRecords/{recordId} {
+      // 활성화된 사용자만 학습 기록 생성/수정 가능
+      allow create, update: if isActiveUser() && 
+                              (request.auth.uid == request.resource.data.userId ||
+                               request.auth.uid == resource.data.userId);
+      
+      // 사용자는 자신의 학습 기록만 읽기 가능
+      allow read: if isAuthenticated() && 
+                   (resource.data.userId == request.auth.uid ||
+                    request.auth.uid == resource.data.userId);
+      
+      // 관리자는 모든 학습 기록에 접근 가능
+      allow read, write: if isAdmin();
+    }
+
+    // 'contents' 컬렉션: 콘텐츠 관리
+    match /contents/{contentId} {
+      // 활성화된 사용자만 콘텐츠 읽기 가능
+      allow read: if isActiveUser();
+      
+      // 관리자만 콘텐츠 생성/수정/삭제 가능
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // 'categories' 컬렉션: 카테고리 관리
+    match /categories/{categoryId} {
+      // 활성화된 사용자만 카테고리 읽기 가능
+      allow read: if isActiveUser();
+      
+      // 관리자만 카테고리 생성/수정/삭제 가능
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // 'comments' 컬렉션: 댓글 관리
+    match /comments/{commentId} {
+      // 모든 인증된 사용자가 댓글 읽기 가능 (강의 품질 확인을 위해)
+      allow read: if isAuthenticated();
+      
+      // 활성화된 사용자만 댓글 작성 가능 (90% 시청 후)
+      allow create: if isActiveUser() && 
+                     request.auth.uid == request.resource.data.userId;
+      
+      // 관리자는 모든 댓글 관리 가능
+      allow read, write: if isAdmin();
+    }
+  }
+}
