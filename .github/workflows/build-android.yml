@@ -23,6 +23,7 @@ jobs:
         
     - name: Install dependencies
       run: |
+        cd EduInnovationApp
         npm install
         
     - name: Setup Expo CLI
@@ -31,11 +32,13 @@ jobs:
         
     - name: Build APK with EAS
       run: |
+        cd EduInnovationApp
         export EXPO_TOKEN="${{ secrets.EXPO_TOKEN }}"
         eas build --platform android --profile preview --non-interactive
         
     - name: Download APK
       run: |
+        cd EduInnovationApp
         eas build:list --platform android --limit 1 --json > build-info.json
         BUILD_URL=$(cat build-info.json | jq -r '.[0].artifacts.buildUrl')
         if [ "$BUILD_URL" != "null" ] && [ "$BUILD_URL" != "" ]; then
@@ -49,5 +52,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: android-apk
-        path: app.apk
+        path: EduInnovationApp/app.apk
         if-no-files-found: warn
