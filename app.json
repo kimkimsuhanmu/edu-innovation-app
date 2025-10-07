@@ -36,9 +36,6 @@
     "extra": {
       "router": {
         "origin": "{YOUR_APP_ORIGIN}"
-      },
-      "eas": {
-        "projectId": "YOUR_EAS_PROJECT_ID"
       }
     }
   }
