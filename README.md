@@ -1,50 +1,86 @@
+# 김포도시관리공사 e-캠퍼스
 
-# TypeScript
+React Native + Expo로 개발된 교육 플랫폼 앱입니다.
 
-[![CI](https://github.com/microsoft/TypeScript/actions/workflows/ci.yml/badge.svg)](https://github.com/microsoft/TypeScript/actions/workflows/ci.yml)
-[![npm version](https://badge.fury.io/js/typescript.svg)](https://www.npmjs.com/package/typescript)
-[![Downloads](https://img.shields.io/npm/dm/typescript.svg)](https://www.npmjs.com/package/typescript)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/microsoft/TypeScript/badge)](https://securityscorecards.dev/viewer/?uri=github.com/microsoft/TypeScript)
+## 기능
 
+- 📚 교육 콘텐츠 시청
+- 🎵 오디오 모드 재생 (백그라운드 재생 지원)
+- ❤️ 즐겨찾기 기능
+- 💬 학습 후기 작성
+- 📊 학습 진도 추적
+- 🔐 사용자 인증 및 권한 관리
 
-[TypeScript](https://www.typescriptlang.org/) is a language for application-scale JavaScript. TypeScript adds optional types to JavaScript that support tools for large-scale JavaScript applications for any browser, for any host, on any OS. TypeScript compiles to readable, standards-based JavaScript. Try it out at the [playground](https://www.typescriptlang.org/play/), and stay up to date via [our blog](https://blogs.msdn.microsoft.com/typescript) and [Twitter account](https://twitter.com/typescript).
+## 빌드 방법
 
-Find others who are using TypeScript at [our community page](https://www.typescriptlang.org/community/).
+### GitHub Actions를 사용한 자동 빌드
 
-## Installing
+1. **Expo 토큰 설정**
+   - [Expo Dashboard](https://expo.dev/accounts/taesan/projects/EduInnovationApp)에서 토큰 생성
+   - GitHub Repository Settings > Secrets > Actions에서 `EXPO_TOKEN` 추가
 
-For the latest stable version:
+2. **빌드 실행**
+   - `main` 또는 `master` 브랜치에 푸시하면 자동으로 빌드 시작
+   - 또는 GitHub Actions 탭에서 수동 실행 가능
+
+3. **APK 다운로드**
+   - 빌드 완료 후 Actions 탭에서 APK 파일 다운로드 가능
+
+### 로컬 빌드
 
 ```bash
-npm install -D typescript
+# 의존성 설치
+cd EduInnovationApp
+npm install
+
+# EAS CLI 설치
+npm install -g eas-cli
+
+# Expo 로그인
+eas login
+
+# APK 빌드
+eas build --platform android --profile preview
 ```
 
-For our nightly builds:
+## 프로젝트 구조
 
-```bash
-npm install -D typescript@next
+```
+EduInnovationApp/
+├── src/
+│   ├── screens/          # 화면 컴포넌트
+│   ├── components/       # 재사용 가능한 컴포넌트
+│   ├── services/         # Firebase 및 API 서비스
+│   ├── navigation/       # 네비게이션 설정
+│   └── state/           # 상태 관리
+├── assets/              # 이미지 및 아이콘
+├── .github/workflows/   # GitHub Actions 설정
+└── app.json            # Expo 앱 설정
 ```
 
-## Contribute
+## 주요 기술 스택
 
-There are many ways to [contribute](https://github.com/microsoft/TypeScript/blob/main/CONTRIBUTING.md) to TypeScript.
-* [Submit bugs](https://github.com/microsoft/TypeScript/issues) and help us verify fixes as they are checked in.
-* Review the [source code changes](https://github.com/microsoft/TypeScript/pulls).
-* Engage with other TypeScript users and developers on [StackOverflow](https://stackoverflow.com/questions/tagged/typescript).
-* Help each other in the [TypeScript Community Discord](https://discord.gg/typescript).
-* Join the [#typescript](https://twitter.com/search?q=%23TypeScript) discussion on Twitter.
-* [Contribute bug fixes](https://github.com/microsoft/TypeScript/blob/main/CONTRIBUTING.md).
+- **Frontend**: React Native, Expo
+- **Backend**: Firebase (Firestore, Authentication, Storage)
+- **State Management**: React Context API
+- **Navigation**: React Navigation
+- **Video Player**: React Native Video
+- **Build**: EAS Build, GitHub Actions
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see
-the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com)
-with any additional questions or comments.
+## 개발 환경 설정
 
-## Documentation
+1. Node.js 20+ 설치
+2. Expo CLI 설치: `npm install -g @expo/cli`
+3. 프로젝트 클론 및 의존성 설치
+4. Firebase 설정 파일 추가
+5. `npx expo start`로 개발 서버 시작
 
-*  [TypeScript in 5 minutes](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
-*  [Programming handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
-*  [Homepage](https://www.typescriptlang.org/)
+## 배포
 
-## Roadmap
+- **APK**: GitHub Actions를 통한 자동 빌드
+- **AAB**: 구글 플레이 스토어 등록용 (production 프로필 사용)
+- **웹**: PWA 지원으로 모바일에서도 앱처럼 사용 가능
 
-For details on our planned features and future direction, please refer to our [roadmap](https://github.com/microsoft/TypeScript/wiki/Roadmap).
+## 라이선스
+
+이 프로젝트는 MIT 라이선스 하에 있습니다.
