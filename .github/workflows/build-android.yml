@@ -23,8 +23,10 @@ jobs:
 
     - name: Install dependencies
       run: |
-        cd EduInnovationApp
-        npm install
+        ls -la
+        pwd
+        ls -la EduInnovationApp/
+        cd EduInnovationApp && npm install
 
     - name: Setup Expo CLI
       run: |
