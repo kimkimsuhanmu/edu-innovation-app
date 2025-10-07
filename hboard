@@ -1,0 +1,54 @@
+[33mtag v1.0-stable[m
+Tagger: Guc EduCast Developer <user@example.com>
+Date:   Wed Oct 1 21:40:04 2025 +0700
+
+안정적인 기능 완성 버전 - 큰 변경 작업 전 백업
+
+[33mcommit 5a04f18bedd6598b08f0e9ee9b3fb97f37dbb09d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;33mtag: [m[1;33mv1.0-stable[m[33m)[m
+Author: Guc EduCast Developer <user@example.com>
+Date:   Wed Oct 1 21:38:52 2025 +0700
+
+    교육 혁신 플랫폼 - 주요 기능 완성 버전
+    
+     완료된 기능들:
+    - 이어듣기 기능 (팝업으로 사용자 선택권 제공)
+    - 검색 기능 개선 (부분 문자열 검색, 대소문자 구분 없음, 검색 취소)
+    - 정렬 기능 개선 (최신순, 인기순, 추천순, 즐겨찾기순 모두 정상 작동)
+    - UI 개선 (학습 진행률 섹션 컴팩트화, 전체화면 기능)
+    - 관리자 페이지 파일 교체 기능 (비디오, 오디오, 썸네일 교체 가능)
+    - Firebase 인덱스 문제 해결 (클라이언트 정렬로 임시 해결)
+    - 즐겨찾기 목록 기능 추가
+    
+     주요 개선사항:
+    - 사용자 경험 대폭 개선
+    - 모든 정렬 방식이 직관적으로 작동
+    - 검색 기능이 사용자 친화적으로 개선
+    - 관리자가 콘텐츠 파일을 쉽게 교체 가능
+    - 이어듣기 기능으로 학습 연속성 확보
+
+ .expo/README.md                |    15 [32m+[m
+ .expo/settings.json            |     8 [32m+[m
+ .firebaserc                    |     5 [32m+[m
+ .gitignore                     |    69 [32m+[m
+ .vscode/settings.json          |     3 [32m+[m
+ EduInnovationApp               |     1 [32m+[m
+ admin-dashboard                |     1 [32m+[m
+ config-overrides.js            |    33 [32m+[m
+ cors.json                      |    17 [32m+[m
+ cursor.rules.json              |    45 [32m+[m
+ firebase.json                  |    41 [32m+[m
+ firestore-rules-production.txt |    98 [32m+[m
+ firestore-rules.txt            |    46 [32m+[m
+ firestore.indexes.json         |    15 [32m+[m
+ functions/.eslintrc.js         |    33 [32m+[m
+ functions/.gitignore           |    10 [32m+[m
+ functions/package-lock.json    | 10434 [32m+++++++++++++++++++++++++++++++++++++++[m
+ functions/package.json         |    32 [32m+[m
+ functions/src/index.ts         |    87 [32m+[m
+ functions/tsconfig.dev.json    |     5 [32m+[m
+ functions/tsconfig.json        |    17 [32m+[m
+ prd.md                         |   102 [32m+[m
+ set-cors-admin.js              |    44 [32m+[m
+ set-cors.js                    |    40 [32m+[m
+ storage.rules                  |    11 [32m+[m
+ 25 files changed, 11212 insertions(+)
