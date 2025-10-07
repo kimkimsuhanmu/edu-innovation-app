@@ -33,7 +33,7 @@ jobs:
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       run: |
-        eas init --non-interactive
+        eas init --non-interactive --force
 
     - name: Build APK with EAS
       env:
