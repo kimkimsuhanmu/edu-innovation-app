@@ -29,11 +29,9 @@ jobs:
       run: |
         npm install -g @expo/cli eas-cli
         
-    - name: Login to Expo
+    - name: Setup Expo token
       run: |
-        eas login --non-interactive
-      env:
-        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        echo "EXPO_TOKEN=${{ secrets.EXPO_TOKEN }}" >> $GITHUB_ENV
         
     - name: Build APK with EAS
       run: |
