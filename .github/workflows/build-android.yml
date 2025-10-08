@@ -73,7 +73,7 @@ jobs:
       run: |
         echo "Building APK with Expo..."
         # Expo prebuild로 네이티브 프로젝트 생성
-        npx expo prebuild --platform android --clear
+        npx expo prebuild --platform android
         echo "Prebuild completed"
         
         # Gradle로 APK 빌드
