@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "EduInnovationApp",
-    "slug": "EduInnovationApp",
+    "name": "김포도시관리공사 e-캠퍼스",
+    "slug": "gimpo-e-campus",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
