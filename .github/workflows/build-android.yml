@@ -36,6 +36,9 @@ jobs:
         echo "EXPO_TOKEN is set: ${{ secrets.EXPO_TOKEN != '' }}"
         eas init --non-interactive --force
         echo "EAS project configured successfully"
+        
+    - name: Make gradlew executable
+      run: chmod +x android/gradlew
 
     - name: Build APK with EAS
       env:
