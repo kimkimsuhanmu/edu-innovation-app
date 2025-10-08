@@ -1,10 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert, Image } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function App() {
-  const handlePress = () => {
+const Stack = createStackNavigator();
+
+// 홈 화면 컴포넌트
+function HomeScreen({ navigation }: any) {
+  const handleStartLearning = () => {
     Alert.alert(
-      '김포도시관리공사 e-캠퍼스', 
+      '김포도시관리공사 e-캠퍼스',
       '온라인 학습 플랫폼에 오신 것을 환영합니다!\n\n• 다양한 교육 콘텐츠\n• 실시간 학습 진행률 추적\n• 모바일 최적화된 학습 환경\n\n지금 바로 학습을 시작해보세요!'
     );
   };
@@ -21,7 +27,7 @@ export default function App() {
       <Text style={styles.subtitle}>e-캠퍼스</Text>
       <Text style={styles.description}>온라인 학습 플랫폼</Text>
       
-      <TouchableOpacity style={styles.button} onPress={handlePress}>
+      <TouchableOpacity style={styles.button} onPress={handleStartLearning}>
         <Text style={styles.buttonText}>학습 시작하기</Text>
       </TouchableOpacity>
       
@@ -31,6 +37,38 @@ export default function App() {
         <Text style={styles.featureText}>✓ 다양한 콘텐츠</Text>
       </View>
     </View>
+  );
+}
+
+// 메인 앱 컴포넌트
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#3498db',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen}
+          options={{
+            title: '김포도시관리공사 e-캠퍼스',
+            headerLeft: () => (
+              <TouchableOpacity style={styles.headerButton}>
+                <Ionicons name="menu" size={24} color="#fff" />
+              </TouchableOpacity>
+            ),
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -108,5 +146,9 @@ const styles = StyleSheet.create({
     color: '#27ae60',
     marginBottom: 8,
     fontWeight: '500',
+  },
+  headerButton: {
+    marginLeft: 15,
+    padding: 5,
   },
 });
