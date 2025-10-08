@@ -37,14 +37,14 @@ jobs:
         eas init --non-interactive --force
         echo "EAS project configured successfully"
 
-    - name: Build APK with EAS
+    - name: Build APK with Expo
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       run: |
-        echo "Building APK with EAS using robot token..."
+        echo "Building APK with Expo CLI..."
         echo "EXPO_TOKEN is set: ${{ secrets.EXPO_TOKEN != '' }}"
         echo "EXPO_TOKEN length: ${#EXPO_TOKEN}"
-        eas build --platform android --profile preview
+        npx expo build:android --type apk --non-interactive
 
     - name: Download APK
       run: |
