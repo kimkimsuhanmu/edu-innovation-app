@@ -48,20 +48,14 @@ jobs:
         echo "EXPO_TOKEN is set: ${{ secrets.EXPO_TOKEN != '' }}"
         echo "EXPO_TOKEN length: ${#EXPO_TOKEN}"
         echo "Using existing keystore from Expo server..."
-        eas build --platform android --profile preview --non-interactive
+        eas build -p android --profile preview --local
 
-    - name: Download APK
+    - name: Prepare APK artifact
       run: |
-        echo "Downloading APK..."
+        echo "Preparing APK artifact..."
         mkdir -p artifacts
-        eas build:list --platform android --limit 1 --json > build-info.json
-        BUILD_URL=$(cat build-info.json | jq -r '.[0].artifacts.buildUrl')
-        if [ "$BUILD_URL" != "null" ] && [ "$BUILD_URL" != "" ]; then
-          curl -L -o artifacts/gimpo-e-campus.apk "$BUILD_URL"
-          echo "APK downloaded successfully: gimpo-e-campus.apk"
-        else
-          echo "No APK URL found"
-        fi
+        cp build/android/app/build/outputs/apk/release/app-release.apk artifacts/gimpo-e-campus.apk
+        echo "APK prepared successfully: gimpo-e-campus.apk"
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
