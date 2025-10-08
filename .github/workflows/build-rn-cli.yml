@@ -1,0 +1,51 @@
+name: Build APK with React Native CLI
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
+    - name: Install dependencies
+      run: |
+        npm install
+        npm install -g @react-native-community/cli
+        
+    - name: Generate Android project
+      run: |
+        npx react-native init TempProject --template react-native-template-typescript
+        cd TempProject
+        
+    - name: Build APK
+      run: |
+        cd TempProject
+        npx react-native build-android --mode=release
+        
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-apk
+        path: TempProject/android/app/build/outputs/apk/release/app-release.apk
+        if-no-files-found: warn
