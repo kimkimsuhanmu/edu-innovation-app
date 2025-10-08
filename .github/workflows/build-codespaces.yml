@@ -38,6 +38,7 @@ jobs:
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       run: |
+        echo "Building APK with Codespaces (Android SDK + Java)..."
         eas build --platform android --profile production --non-interactive
         
     - name: Download APK
