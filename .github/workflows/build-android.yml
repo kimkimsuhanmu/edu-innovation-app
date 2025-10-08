@@ -37,13 +37,6 @@ jobs:
         eas init --non-interactive --force
         echo "EAS project configured successfully"
 
-    - name: Upload Keystore to EAS
-      env:
-        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-      run: |
-        echo "Uploading Keystore to EAS..."
-        eas credentials --platform android --non-interactive
-
     - name: Build APK with EAS
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
