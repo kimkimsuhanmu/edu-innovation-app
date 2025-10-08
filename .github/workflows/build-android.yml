@@ -37,13 +37,6 @@ jobs:
         eas init --non-interactive --force
         echo "EAS project configured successfully"
 
-    - name: Create credentials
-      env:
-        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-      run: |
-        echo "Creating Android credentials..."
-        eas credentials --platform android --profile preview --non-interactive
-
     - name: Build APK with EAS
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
