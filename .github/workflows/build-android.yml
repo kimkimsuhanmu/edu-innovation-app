@@ -47,9 +47,7 @@ jobs:
         echo "Building APK with EAS..."
         echo "EXPO_TOKEN is set: ${{ secrets.EXPO_TOKEN != '' }}"
         echo "EXPO_TOKEN length: ${#EXPO_TOKEN}"
-        echo "Creating keystore manually..."
-        mkdir -p android/app
-        keytool -genkeypair -v -keystore android/app/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
+        echo "Using existing keystore from Expo server..."
         eas build --platform android --profile preview --non-interactive
 
     - name: Download APK
