@@ -30,10 +30,25 @@ if %ERRORLEVEL% neq 0 (
     exit /b %ERRORLEVEL%
 )
 
+echo 5. APK 다운로드 중...
+call eas build:list --platform android --limit 1 --json > build-info.json
+for /f "tokens=*" %%i in ('type build-info.json ^| jq -r ".[0].artifacts.buildUrl"') do set BUILD_URL=%%i
+
+if not "%BUILD_URL%"=="null" (
+    echo APK 다운로드 URL: %BUILD_URL%
+    curl -L -o "김포도시관리공사-e-캠퍼스.apk" "%BUILD_URL%"
+    if %ERRORLEVEL% equ 0 (
+        echo APK 파일이 성공적으로 다운로드되었습니다: 김포도시관리공사-e-캠퍼스.apk
+    ) else (
+        echo APK 다운로드 실패. EAS 대시보드에서 수동으로 다운로드하세요.
+    )
+) else (
+    echo APK URL을 찾을 수 없습니다. EAS 대시보드에서 확인하세요.
+)
+
 echo.
 echo ===== 빌드 완료! =====
-echo APK 파일이 성공적으로 생성되었습니다.
-echo EAS 대시보드에서 다운로드할 수 있습니다.
+echo EAS 대시보드: https://expo.dev
 echo.
 
 pause
