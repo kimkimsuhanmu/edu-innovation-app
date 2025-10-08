@@ -47,15 +47,11 @@ jobs:
     - name: Generate Keystore
       run: |
         echo "Generating Android Keystore..."
-        # 고유한 Keystore 파일명 생성 (타임스탬프 포함)
-        KEYSTORE_NAME="keystore-$(date +%s).keystore"
-        KEY_ALIAS="key-alias-$(date +%s)"
-        echo "Using keystore: $KEYSTORE_NAME"
+        # 고정된 별칭 사용
+        KEY_ALIAS="my-key-alias"
         echo "Using alias: $KEY_ALIAS"
         # 새로운 Keystore 생성
-        keytool -genkey -v -keystore "$KEYSTORE_NAME" -alias "$KEY_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 -storepass android123 -keypass android123 -dname "CN=Gimpo E-Campus, OU=IT, O=Gimpo City Management Corporation, L=Gimpo, S=Gyeonggi, C=KR"
-        # 표준 이름으로 복사
-        cp "$KEYSTORE_NAME" my-release-key.keystore
+        keytool -genkey -v -keystore my-release-key.keystore -alias "$KEY_ALIAS" -keyalg RSA -keysize 2048 -validity 10000 -storepass android123 -keypass android123 -dname "CN=Gimpo E-Campus, OU=IT, O=Gimpo City Management Corporation, L=Gimpo, S=Gyeonggi, C=KR"
         echo "Keystore generated successfully"
 
     - name: Configure Gradle
