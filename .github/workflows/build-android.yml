@@ -25,31 +25,25 @@ jobs:
       run: |
         npm install
 
-    - name: Setup Expo CLI
+    - name: Setup Expo and EAS CLI
       run: |
         npm install -g @expo/cli eas-cli
 
-    - name: Build APK with Expo
+    - name: Generate debug keystore
+      run: |
+        mkdir -p android/app
+        keytool -genkey -v -keystore android/app/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+
+    - name: Build APK locally with EAS
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       run: |
         echo "EXPO_TOKEN is set: ${{ secrets.EXPO_TOKEN != '' }}"
-        npx expo build:android --type apk --non-interactive
-
-    - name: Download APK
-      run: |
-        npx expo build:status --platform android --json > build-status.json
-        BUILD_URL=$(cat build-status.json | jq -r '.url')
-        if [ "$BUILD_URL" != "null" ] && [ "$BUILD_URL" != "" ]; then
-          curl -L -o app.apk "$BUILD_URL"
-          echo "APK downloaded successfully"
-        else
-          echo "No APK URL found"
-        fi
+        eas build --platform android --profile preview --local
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
       with:
         name: android-apk
-        path: app.apk
+        path: build/*.apk
         if-no-files-found: warn
