@@ -62,6 +62,8 @@ jobs:
       run: |
         echo "Configuring Gradle..."
         mkdir -p android/app
+        # Keystore를 android/app 폴더로 복사
+        cp my-release-key.keystore android/app/my-release-key.keystore
         echo "MYAPP_RELEASE_STORE_FILE=my-release-key.keystore" >> android/gradle.properties
         echo "MYAPP_RELEASE_KEY_ALIAS=my-key-alias" >> android/gradle.properties
         echo "MYAPP_RELEASE_STORE_PASSWORD=android123" >> android/gradle.properties
