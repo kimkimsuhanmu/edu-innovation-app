@@ -47,6 +47,8 @@ jobs:
     - name: Generate Keystore
       run: |
         echo "Generating Android Keystore..."
+        # 기존 Keystore 파일 삭제
+        rm -f my-release-key.keystore
         # 고정된 별칭 사용
         KEY_ALIAS="my-key-alias"
         echo "Using alias: $KEY_ALIAS"
