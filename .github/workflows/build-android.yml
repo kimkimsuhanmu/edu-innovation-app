@@ -42,7 +42,7 @@ jobs:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       run: |
         echo "Building APK with EAS using local keystore..."
-        eas build --platform android --profile preview --non-interactive
+        eas build --platform android --profile preview
 
     - name: Download APK
       run: |
