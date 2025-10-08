@@ -47,23 +47,18 @@ jobs:
         echo "Building APK with EAS..."
         echo "EXPO_TOKEN is set: ${{ secrets.EXPO_TOKEN != '' }}"
         echo "EXPO_TOKEN length: ${#EXPO_TOKEN}"
-        eas build --platform android --profile production --non-interactive
+        eas build --platform android --profile preview --local --non-interactive
 
-    - name: Download APK
+    - name: Rename and prepare APK
       run: |
-        echo "Downloading APK..."
-        eas build:list --platform android --limit 1 --json > build-info.json
-        BUILD_URL=$(cat build-info.json | jq -r '.[0].artifacts.buildUrl')
-        if [ "$BUILD_URL" != "null" ] && [ "$BUILD_URL" != "" ]; then
-          curl -L -o "김포도시관리공사-e-캠퍼스.apk" "$BUILD_URL"
-          echo "APK downloaded successfully: 김포도시관리공사-e-캠퍼스.apk"
-        else
-          echo "No APK URL found"
-        fi
+        echo "Preparing APK..."
+        mkdir -p artifacts
+        cp build/android/app/build/outputs/apk/release/app-release.apk artifacts/김포도시관리공사-e-캠퍼스.apk
+        echo "APK prepared successfully: 김포도시관리공사-e-캠퍼스.apk"
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
       with:
         name: android-apk
-        path: 김포도시관리공사-e-캠퍼스.apk
+        path: artifacts/김포도시관리공사-e-캠퍼스.apk
         if-no-files-found: warn
