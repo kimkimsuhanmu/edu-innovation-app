@@ -41,7 +41,9 @@ jobs:
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       run: |
-        echo "Building APK with EAS using local keystore..."
+        echo "Building APK with EAS using remote credentials..."
+        echo "EXPO_TOKEN is set: ${{ secrets.EXPO_TOKEN != '' }}"
+        echo "EXPO_TOKEN length: ${#EXPO_TOKEN}"
         eas build --platform android --profile preview
 
     - name: Download APK
