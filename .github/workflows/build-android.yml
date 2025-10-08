@@ -67,28 +67,20 @@ jobs:
         echo "MYAPP_RELEASE_STORE_PASSWORD=android123" >> android/gradle.properties
         echo "MYAPP_RELEASE_KEY_PASSWORD=android123" >> android/gradle.properties
 
-    - name: Build APK with Gradle
+    - name: Build APK with Expo
+      env:
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       run: |
-        echo "Building APK with Gradle..."
-        # gradlew 파일 존재 확인 및 실행 권한 부여
-        if [ -f "android/gradlew" ]; then
-          echo "gradlew file found, setting executable permissions..."
-          chmod +x android/gradlew
-          cd android
-          echo "Current directory: $(pwd)"
-          echo "Listing files:"
-          ls -la
-          echo "Running gradlew assembleRelease..."
-          ./gradlew assembleRelease --stacktrace --info
-          echo "APK built successfully"
-        else
-          echo "gradlew file not found, creating it..."
-          cd android
-          gradle wrapper
-          chmod +x gradlew
-          ./gradlew assembleRelease --stacktrace --info
-          echo "APK built successfully"
-        fi
+        echo "Building APK with Expo..."
+        # Expo prebuild로 네이티브 프로젝트 생성
+        npx expo prebuild --platform android --clear
+        echo "Prebuild completed"
+        
+        # Gradle로 APK 빌드
+        cd android
+        chmod +x gradlew
+        ./gradlew assembleRelease --stacktrace --info
+        echo "APK built successfully"
 
     - name: Prepare APK artifact
       run: |
