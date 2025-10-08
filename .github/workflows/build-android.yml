@@ -29,23 +29,17 @@ jobs:
       run: |
         npm install -g @expo/cli eas-cli
 
-    - name: Initialize EAS project
-      env:
-        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-      run: |
-        eas init --non-interactive --force
-
-    - name: Build APK with EAS
+    - name: Build APK with Expo
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       run: |
         echo "EXPO_TOKEN is set: ${{ secrets.EXPO_TOKEN != '' }}"
-        eas build --platform android --profile preview --non-interactive --clear-cache
+        npx expo build:android --type apk --non-interactive
 
     - name: Download APK
       run: |
-        eas build:list --platform android --limit 1 --json > build-info.json
-        BUILD_URL=$(cat build-info.json | jq -r '.[0].artifacts.buildUrl')
+        npx expo build:status --platform android --json > build-status.json
+        BUILD_URL=$(cat build-status.json | jq -r '.url')
         if [ "$BUILD_URL" != "null" ] && [ "$BUILD_URL" != "" ]; then
           curl -L -o app.apk "$BUILD_URL"
           echo "APK downloaded successfully"
