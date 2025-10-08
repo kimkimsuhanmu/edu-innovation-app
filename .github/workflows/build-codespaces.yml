@@ -1,0 +1,57 @@
+name: Build APK with Codespaces
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Setup Expo CLI
+      run: npm install -g @expo/cli eas-cli
+      
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
+    - name: Build APK with EAS
+      env:
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      run: |
+        eas build --platform android --profile production --non-interactive
+        
+    - name: Download APK
+      run: |
+        eas build:list --platform android --limit 1 --json > build-info.json
+        BUILD_URL=$(cat build-info.json | jq -r '.[0].artifacts.buildUrl')
+        if [ "$BUILD_URL" != "null" ] && [ "$BUILD_URL" != "" ]; then
+          curl -L -o "김포도시관리공사-e-캠퍼스.apk" "$BUILD_URL"
+          echo "APK downloaded successfully"
+        fi
+        
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-apk
+        path: 김포도시관리공사-e-캠퍼스.apk
+        if-no-files-found: warn

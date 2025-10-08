@@ -1,0 +1,20 @@
+image: node:20
+
+variables:
+  EXPO_TOKEN: $EXPO_TOKEN
+
+before_script:
+  - npm install -g @expo/cli eas-cli
+  - npm install
+
+build:
+  stage: build
+  script:
+    - eas build --platform android --profile production --non-interactive
+    - eas build:list --platform android --limit 1 --json > build-info.json
+    - BUILD_URL=$(cat build-info.json | jq -r '.[0].artifacts.buildUrl')
+    - if [ "$BUILD_URL" != "null" ] && [ "$BUILD_URL" != "" ]; then curl -L -o "김포도시관리공사-e-캠퍼스.apk" "$BUILD_URL"; fi
+  artifacts:
+    paths:
+      - 김포도시관리공사-e-캠퍼스.apk
+    expire_in: 1 week
