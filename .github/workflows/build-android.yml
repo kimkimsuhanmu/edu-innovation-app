@@ -40,7 +40,7 @@ jobs:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       run: |
         echo "EXPO_TOKEN is set: ${{ secrets.EXPO_TOKEN != '' }}"
-        eas build --platform android --profile preview --non-interactive
+        eas build --platform android --profile preview --non-interactive --clear-cache
 
     - name: Download APK
       run: |
@@ -59,4 +59,3 @@ jobs:
         name: android-apk
         path: app.apk
         if-no-files-found: warn
-
