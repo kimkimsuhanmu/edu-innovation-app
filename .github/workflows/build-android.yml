@@ -53,12 +53,12 @@ jobs:
       run: |
         echo "Preparing APK..."
         mkdir -p artifacts
-        cp build/android/app/build/outputs/apk/release/app-release.apk artifacts/김포도시관리공사-e-캠퍼스.apk
-        echo "APK prepared successfully: 김포도시관리공사-e-캠퍼스.apk"
+        cp build/android/app/build/outputs/apk/release/app-release.apk artifacts/gimpo-e-campus.apk
+        echo "APK prepared successfully: gimpo-e-campus.apk"
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
       with:
         name: android-apk
-        path: artifacts/김포도시관리공사-e-캠퍼스.apk
+        path: artifacts/gimpo-e-campus.apk
         if-no-files-found: warn
