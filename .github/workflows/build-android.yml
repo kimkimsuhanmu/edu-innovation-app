@@ -29,32 +29,46 @@ jobs:
       run: |
         npm install -g @expo/cli eas-cli
 
-    - name: Configure EAS project
-      env:
-        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-      run: |
-        echo "EXPO_TOKEN is set: ${{ secrets.EXPO_TOKEN != '' }}"
-        eas init --non-interactive --force
-        echo "EAS project configured successfully"
-        
-    - name: Make gradlew executable
-      run: chmod +x android/gradlew
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      with:
+        api-level: 34
+        build-tools: 34.0.0
+        ndk: 25.2.9519653
 
-    - name: Build APK with EAS
-      env:
-        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Generate Keystore
       run: |
-        echo "Building APK with EAS..."
-        echo "EXPO_TOKEN is set: ${{ secrets.EXPO_TOKEN != '' }}"
-        echo "EXPO_TOKEN length: ${#EXPO_TOKEN}"
-        echo "Using existing keystore from Expo server..."
-        eas build -p android --profile preview --local
+        echo "Generating Android Keystore..."
+        keytool -genkey -v -keystore my-release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000 -storepass android123 -keypass android123 -dname "CN=Gimpo E-Campus, OU=IT, O=Gimpo City Management Corporation, L=Gimpo, S=Gyeonggi, C=KR"
+        echo "Keystore generated successfully"
+
+    - name: Configure Gradle
+      run: |
+        echo "Configuring Gradle..."
+        mkdir -p android/app
+        echo "MYAPP_RELEASE_STORE_FILE=my-release-key.keystore" >> android/gradle.properties
+        echo "MYAPP_RELEASE_KEY_ALIAS=my-key-alias" >> android/gradle.properties
+        echo "MYAPP_RELEASE_STORE_PASSWORD=android123" >> android/gradle.properties
+        echo "MYAPP_RELEASE_KEY_PASSWORD=android123" >> android/gradle.properties
+
+    - name: Build APK with Gradle
+      run: |
+        echo "Building APK with Gradle..."
+        cd android
+        ./gradlew assembleRelease
+        echo "APK built successfully"
 
     - name: Prepare APK artifact
       run: |
         echo "Preparing APK artifact..."
         mkdir -p artifacts
-        cp build/android/app/build/outputs/apk/release/app-release.apk artifacts/gimpo-e-campus.apk
+        cp android/app/build/outputs/apk/release/app-release.apk artifacts/gimpo-e-campus.apk
         echo "APK prepared successfully: gimpo-e-campus.apk"
 
     - name: Upload APK artifact
