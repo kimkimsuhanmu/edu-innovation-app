@@ -38,7 +38,11 @@
     "extra": {
       "router": {
         "origin": "{YOUR_APP_ORIGIN}"
+      },
+      "eas": {
+        "projectId": "fa49e67a-f93d-49f6-9f66-6b64615beb33"
       }
-    }
+    },
+    "owner": "taesan"
   }
 }
