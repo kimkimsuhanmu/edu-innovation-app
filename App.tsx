@@ -9,7 +9,6 @@ import {
   StatusBar,
   Platform 
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -52,7 +51,7 @@ export default function App() {
       {/* 헤더 */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.menuButton} onPress={handleMenuPress}>
-          <Ionicons name="menu" size={24} color="#2c3e50" />
+          <Text style={styles.menuIcon}>☰</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>김포도시관리공사 e-캠퍼스</Text>
         <View style={styles.headerSpacer} />
@@ -72,7 +71,7 @@ export default function App() {
           <Text style={styles.description}>온라인 학습 플랫폼</Text>
           
           <TouchableOpacity style={styles.button} onPress={handleStartLearning}>
-            <Ionicons name="play-circle" size={24} color="white" style={styles.buttonIcon} />
+            <Text style={styles.buttonIcon}>▶</Text>
             <Text style={styles.buttonText}>학습 시작하기</Text>
           </TouchableOpacity>
           
@@ -89,22 +88,22 @@ export default function App() {
           
           <View style={styles.featureGrid}>
             <TouchableOpacity style={styles.featureCard}>
-              <Ionicons name="videocam" size={32} color="#3498db" />
+              <Text style={styles.featureIcon}>📹</Text>
               <Text style={styles.featureCardText}>동영상 학습</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.featureCard}>
-              <Ionicons name="headset" size={32} color="#3498db" />
+              <Text style={styles.featureIcon}>🎧</Text>
               <Text style={styles.featureCardText}>오디오 학습</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.featureCard}>
-              <Ionicons name="bar-chart" size={32} color="#3498db" />
+              <Text style={styles.featureIcon}>📊</Text>
               <Text style={styles.featureCardText}>진행률 추적</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.featureCard}>
-              <Ionicons name="bookmark" size={32} color="#3498db" />
+              <Text style={styles.featureIcon}>⭐</Text>
               <Text style={styles.featureCardText}>즐겨찾기</Text>
             </TouchableOpacity>
           </View>
@@ -141,6 +140,10 @@ const styles = StyleSheet.create({
   },
   menuButton: {
     padding: 5,
+  },
+  menuIcon: {
+    fontSize: 20,
+    color: '#2c3e50',
   },
   headerTitle: {
     flex: 1,
@@ -265,7 +268,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
   },
+  featureIcon: {
+    fontSize: 32,
+    marginBottom: 10,
+  },
   buttonIcon: {
     marginRight: 8,
+    fontSize: 18,
+    color: 'white',
   },
 });
