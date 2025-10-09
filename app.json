@@ -2,8 +2,8 @@
   "expo": {
     "name": "김포도시관리공사 e-캠퍼스",
     "slug": "gimpo-e-campus",
-    "version": "1.0.2",
-    "versionCode": 3,
+    "version": "1.0.3",
+    "versionCode": 4,
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -24,7 +24,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.gimpoecampus.app",
-      "versionCode": 3,
+      "versionCode": 4,
       "permissions": [
         "android.permission.INTERNET",
         "android.permission.ACCESS_NETWORK_STATE",

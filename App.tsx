@@ -1,7 +1,28 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { 
+  StyleSheet, 
+  Text, 
+  View, 
+  TouchableOpacity, 
+  Alert, 
+  ScrollView,
+  StatusBar,
+  Platform 
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // 앱 초기화 시뮬레이션
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleStartLearning = () => {
     Alert.alert(
       '김포도시관리공사 e-캠퍼스',
@@ -9,30 +30,87 @@ export default function App() {
     );
   };
 
+  const handleMenuPress = () => {
+    Alert.alert('메뉴', '메뉴 기능이 곧 추가될 예정입니다.');
+  };
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <View style={styles.logoCircle}>
+          <Text style={styles.logoText}>김포</Text>
+        </View>
+        <Text style={styles.loadingText}>로딩 중...</Text>
+      </View>
+    );
+  }
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.logoContainer}>
-          <View style={styles.logoCircle}>
-            <Text style={styles.logoText}>김포</Text>
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#f8f9fa" />
+      
+      {/* 헤더 */}
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.menuButton} onPress={handleMenuPress}>
+          <Ionicons name="menu" size={24} color="#2c3e50" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>김포도시관리공사 e-캠퍼스</Text>
+        <View style={styles.headerSpacer} />
+      </View>
+
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {/* 메인 콘텐츠 */}
+        <View style={styles.mainContent}>
+          <View style={styles.logoContainer}>
+            <View style={styles.logoCircle}>
+              <Text style={styles.logoText}>김포</Text>
+            </View>
+          </View>
+          
+          <Text style={styles.title}>김포도시관리공사</Text>
+          <Text style={styles.subtitle}>e-캠퍼스</Text>
+          <Text style={styles.description}>온라인 학습 플랫폼</Text>
+          
+          <TouchableOpacity style={styles.button} onPress={handleStartLearning}>
+            <Ionicons name="play-circle" size={24} color="white" style={styles.buttonIcon} />
+            <Text style={styles.buttonText}>학습 시작하기</Text>
+          </TouchableOpacity>
+          
+          <View style={styles.features}>
+            <Text style={styles.featureText}>✓ 모바일 최적화</Text>
+            <Text style={styles.featureText}>✓ 실시간 진행률</Text>
+            <Text style={styles.featureText}>✓ 다양한 콘텐츠</Text>
           </View>
         </View>
-        
-        <Text style={styles.title}>김포도시관리공사</Text>
-        <Text style={styles.subtitle}>e-캠퍼스</Text>
-        <Text style={styles.description}>온라인 학습 플랫폼</Text>
-        
-        <TouchableOpacity style={styles.button} onPress={handleStartLearning}>
-          <Text style={styles.buttonText}>학습 시작하기</Text>
-        </TouchableOpacity>
-        
-        <View style={styles.features}>
-          <Text style={styles.featureText}>✓ 모바일 최적화</Text>
-          <Text style={styles.featureText}>✓ 실시간 진행률</Text>
-          <Text style={styles.featureText}>✓ 다양한 콘텐츠</Text>
+
+        {/* 추가 기능 섹션 */}
+        <View style={styles.additionalFeatures}>
+          <Text style={styles.sectionTitle}>주요 기능</Text>
+          
+          <View style={styles.featureGrid}>
+            <TouchableOpacity style={styles.featureCard}>
+              <Ionicons name="videocam" size={32} color="#3498db" />
+              <Text style={styles.featureCardText}>동영상 학습</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.featureCard}>
+              <Ionicons name="headset" size={32} color="#3498db" />
+              <Text style={styles.featureCardText}>오디오 학습</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.featureCard}>
+              <Ionicons name="bar-chart" size={32} color="#3498db" />
+              <Text style={styles.featureCardText}>진행률 추적</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.featureCard}>
+              <Ionicons name="bookmark" size={32} color="#3498db" />
+              <Text style={styles.featureCardText}>즐겨찾기</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -41,11 +119,48 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f8f9fa',
   },
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: '#f8f9fa',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingText: {
+    fontSize: 16,
+    color: '#7f8c8d',
+    marginTop: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+  },
+  menuButton: {
+    padding: 5,
+  },
+  headerTitle: {
+    flex: 1,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#2c3e50',
+    textAlign: 'center',
+    marginHorizontal: 10,
+  },
+  headerSpacer: {
+    width: 34,
+  },
   content: {
     flex: 1,
+  },
+  mainContent: {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+    paddingTop: 40,
   },
   logoContainer: {
     marginBottom: 30,
@@ -113,5 +228,44 @@ const styles = StyleSheet.create({
     color: '#27ae60',
     marginBottom: 8,
     fontWeight: '500',
+  },
+  additionalFeatures: {
+    padding: 20,
+    paddingTop: 40,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#2c3e50',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  featureGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  featureCard: {
+    width: '48%',
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginBottom: 15,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  featureCardText: {
+    fontSize: 14,
+    color: '#2c3e50',
+    marginTop: 10,
+    fontWeight: '500',
+    textAlign: 'center',
+  },
+  buttonIcon: {
+    marginRight: 8,
   },
 });
